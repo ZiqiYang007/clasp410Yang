@@ -14,15 +14,14 @@ plt.close('all')
 # 2: Froest
 # 3: Burning
 
-Times_confirm = 50 # To have significant results for same condition for burnt
+Times_confirm = 1 # To have significant results for same condition for burnt
 Times_burnt=np.zeros((Times_confirm, 10)) # To record how many steps will it take to end up at each condition
 Ratio_bare=np.zeros((Times_confirm, 10)) # To record the Final Ratio of bare/whole field
 Times_prob_spread=np.zeros((10,1)) # To record different prob_spread
 Times_prob_bare=np.zeros((10,1)) # To record different prob_bare
-Times_sim_upper_limit = 10
-nx = 5
-ny = 5
-nsteps = 16
+nx = 3 # x scales of forest
+ny = 3 # y scales of forest
+nsteps = 9 # steps of fire spreading process
 
 # -------------- The function of fire spread --------------
 def forest_fire(nx,ny,prob_spread,prob_bare,nsteps,cny,cnx,forest,Times_burnt,Times_setvirus,Times_sim,Ratio_bare):
@@ -72,33 +71,33 @@ def forest_fire(nx,ny,prob_spread,prob_bare,nsteps,cny,cnx,forest,Times_burnt,Ti
     # We can specify colors by names and then create a colormap that only uses
     # those names. We have 3 funadmental states, so we want only 3 colors.
     # Color info: https://matplotlib.org/stable/gallery/color/named_colors.html
-    # forest_cmap = ListedColormap(['tan', 'darkgreen', 'crimson'])
-    # strange = ListedColormap(['white', 'black', 'red'])
-    # # Create figure and set of axes:
-    # steps=0
-    # limit_steps=int(np.floor(np.sqrt(nsteps)))
-    # fig, axs = plt.subplots(limit_steps,limit_steps)
-    # for x_fig in range(limit_steps):
-    #     for y_fig in range(limit_steps):       
-    #         # for x_fig in range(2):
-    #         #     for y_fig in range(2):
-    #         contour = axs[x_fig,y_fig].matshow(forest[steps,:,:],vmin=1,vmax=3,cmap=forest_cmap)
-    #         axs[x_fig,y_fig].tick_params(axis='x', labelsize=10)
-    #         axs[x_fig,y_fig].tick_params(axis='y', labelsize=10)
-    #         axs[x_fig,y_fig].set_title(f'Steps={steps}',fontsize=10)
-    #         plt.colorbar(contour)
-    #         steps=steps+1
+    forest_cmap = ListedColormap(['tan', 'darkgreen', 'crimson'])
+    strange = ListedColormap(['white', 'black', 'red'])
+    # Create figure and set of axes:
+    steps=0
+    limit_steps=int(np.floor(np.sqrt(nsteps)))
+    fig, axs = plt.subplots(limit_steps,limit_steps)
+    for x_fig in range(limit_steps):
+        for y_fig in range(limit_steps):       
+            # for x_fig in range(2):
+            #     for y_fig in range(2):
+            contour = axs[x_fig,y_fig].matshow(forest[steps,:,:],vmin=1,vmax=3,cmap=forest_cmap)
+            axs[x_fig,y_fig].tick_params(axis='x', labelsize=10)
+            axs[x_fig,y_fig].tick_params(axis='y', labelsize=10)
+            axs[x_fig,y_fig].set_title(f'Steps={steps}',fontsize=10)
+            plt.colorbar(contour)
+            steps=steps+1
 
-    #             # Given our "forest" object, a 2D array that contains numbers 1, 2, or 3,
-    #             # Plot this using the "pcolor" method. Be sure to use our color map and
-    #             # set both *vmin* and *vmax*:
-    #             # ax.pcolor(forest, cmap=forest_cmap, vmin=1, vmax=3)
+                # Given our "forest" object, a 2D array that contains numbers 1, 2, or 3,
+                # Plot this using the "pcolor" method. Be sure to use our color map and
+                # set both *vmin* and *vmax*:
+                # ax.pcolor(forest, cmap=forest_cmap, vmin=1, vmax=3)
     
-    # plt.suptitle(f'prob_spread={prob_spread}',fontsize=10)
-    # #  f' Times_setvirus={Times_setvirus}'
-    # #  f' prob_bare={prob_bare}'
-    # plt.tight_layout()
-    # plt.show()
+    plt.suptitle(f'prob_spread={prob_spread}',fontsize=10)
+    #  f' Times_setvirus={Times_setvirus}'
+    #  f' prob_bare={prob_bare}'
+    plt.tight_layout()
+    plt.show()
 
 # -------------- The function of simulation --------------
 def forest_sim(nx, ny, prob_spread, prob_bare, nsteps, Times_sim, Times_confirm, Times_burnt, Times_prob_spread,Ratio_bare,Times_prob_bare):
@@ -129,150 +128,9 @@ def forest_sim(nx, ny, prob_spread, prob_bare, nsteps, Times_sim, Times_confirm,
         forest_fire(nx,ny,prob_spread,prob_bare,nsteps,cny,cnx,forest,Times_burnt,Times_setvirus,Times_sim,Ratio_bare)
     Times_prob_spread[Times_sim-1,0]=prob_spread
     Times_prob_bare[Times_sim-1,0]=prob_bare
-    # print(Times_burnt)
-    # print(Times_prob_spread)
 
-# -------------- Spread probability vs.  Iteration Burnt/Burnt ratio --------------
-# independent variation: spread probability
-# dependent variation: how many steps will take as fire disappear (Times_burnt_average)
-# dependent variation: The ratio of burnt field/whole field at the end (Ratio_bare_average). 
-
-Times_burnt_average = np.zeros((1,10))
-
-# prob_bare = 0, Ratio vs. Spread probability
 Times_sim = 1
-prob_bare = 0
-for prob_spread in range (1,11):
-    forest_sim(nx, ny, prob_spread*0.1, prob_bare, nsteps, Times_sim, Times_confirm, Times_burnt, Times_prob_spread,Ratio_bare, Times_prob_bare)
-    Times_sim = Times_sim+1
-Times_burnt_average = np.mean(Times_burnt,axis=0)
-Ratio_bare_average = np.mean(Ratio_bare,axis=0)
-
-fig1 = plt.figure()
-ax = fig1.add_subplot(111)
-plt.title("Final Ratio of bare  vs. Spread probability ",size = 15)
-ax.plot(Times_prob_spread, Ratio_bare_average, label='prob_bare = 0', color='blue', linewidth=2, marker = 'o')
-
-# prob_bare = 0.5, Ratio vs. Spread probability
-Times_sim = 1
-prob_bare = 0.5
-for prob_spread in range (1,11):
-    forest_sim(nx, ny, prob_spread*0.1, prob_bare, nsteps, Times_sim, Times_confirm, Times_burnt, Times_prob_spread,Ratio_bare, Times_prob_bare)
-    Times_sim = Times_sim+1
-Times_burnt_average = np.mean(Times_burnt,axis=0)
-Ratio_bare_average = np.mean(Ratio_bare,axis=0)
-ax.plot(Times_prob_spread, Ratio_bare_average, label='prob_bare = 0.5', color='orange', linewidth=2, marker = 'o')
-
-plt.title("Final Ratio of bare  vs. Spread probability ", size = 15)
-plt.xlabel('Spread probability', size = 15)
-plt.ylabel('Final Ratio of bare', size = 15)
-
-ax.legend()
-plt.show()
-
-
-# prob_bare = 0, Steps vs. Spread probability
-Times_sim = 1
-prob_bare = 0
-for prob_spread in range (1,11):
-    forest_sim(nx, ny, prob_spread*0.1, prob_bare, nsteps, Times_sim, Times_confirm, Times_burnt, Times_prob_spread,Ratio_bare, Times_prob_bare)
-    Times_sim = Times_sim+1
-Times_burnt_average = np.mean(Times_burnt,axis=0)
-Ratio_bare_average = np.mean(Ratio_bare,axis=0)
-
-fig1 = plt.figure()
-ax = fig1.add_subplot(111)
-plt.title("Step as fire stops spreading  vs. Spread probability",size = 15)
-ax.plot(Times_prob_spread, Times_burnt_average, label='prob_bare = 0', color='blue', linewidth=2, marker = 'o')
-
-
-# prob_bare = 0.5, Steps vs. Spread probability
-Times_sim = 1
-prob_bare = 0.5
-for prob_spread in range (1,11):
-    forest_sim(nx, ny, prob_spread*0.1, prob_bare, nsteps, Times_sim, Times_confirm, Times_burnt, Times_prob_spread,Ratio_bare, Times_prob_bare)
-    Times_sim = Times_sim+1
-Times_burnt_average = np.mean(Times_burnt,axis=0)
-Ratio_bare_average = np.mean(Ratio_bare,axis=0)
-
-ax.plot(Times_prob_spread, Times_burnt_average, label='prob_bare = 0.5', color='orange', linewidth=2, marker = 'o')
-
-plt.xlabel('Spread probability', size = 15)
-plt.ylabel('Step as fire stops spreading', size = 15)
-
-ax.legend()
-plt.show()
-
-# -------------- Initial bare probability vs.  Iteration Burnt/Burnt ratio --------------
-# independent variation: initial bare probability
-# dependent variation: how many steps will take as the fire disappear (Times_burnt_average)
-# dependent variation: The ratio of burnt field/whole field at the end (Ratio_bare_average). 
-
-# prob_spread = 1, Ratio vs. bare probability
-Times_sim = 1
-Times_burnt_average = np.zeros((1,10))
 prob_spread = 1
-for prob_bare in range (1,11):
-    forest_sim(nx, ny,prob_spread, prob_bare*0.1, nsteps, Times_sim, Times_confirm, Times_burnt, Times_prob_spread,Ratio_bare, Times_prob_bare)
-    Times_sim = Times_sim+1
-Times_burnt_average = np.mean(Times_burnt,axis=0)
-Ratio_bare_average = np.mean(Ratio_bare,axis=0)
-
-fig1 = plt.figure()
-ax = fig1.add_subplot(111)
-plt.title("Final Ratio of bare  vs. bare probability",size = 15)
-ax.plot(Times_prob_bare, Ratio_bare_average, label='prob_spread = 1', color='blue', linewidth=2, marker = 'o')
-
-# prob_spread = 0.5, Steps vs. bare probability
-Times_sim = 1
-Times_burnt_average = np.zeros((1,10))
-prob_spread = 0.5
-for prob_bare in range (1,11):
-    forest_sim(nx, ny,prob_spread, prob_bare*0.1, nsteps, Times_sim, Times_confirm, Times_burnt, Times_prob_spread,Ratio_bare, Times_prob_bare)
-    Times_sim = Times_sim+1
-Times_burnt_average = np.mean(Times_burnt,axis=0)
-Ratio_bare_average = np.mean(Ratio_bare,axis=0)
-
-ax.plot(Times_prob_bare, Ratio_bare_average, label='prob_spread = 0.5', color='orange', linewidth=2, marker = 'o')
-plt.xlabel('bare probability', size = 15)
-plt.ylabel('Final Ratio of bare', size = 15)
-
-ax.legend()
-plt.show()
-
-
-
-# prob_spread = 1, Steps vs. bare probability
-Times_sim = 1
-Times_burnt_average = np.zeros((1,10))
-prob_spread = 1
-for prob_bare in range (1,11):
-    forest_sim(nx, ny,prob_spread, prob_bare*0.1, nsteps, Times_sim, Times_confirm, Times_burnt, Times_prob_spread,Ratio_bare, Times_prob_bare)
-    Times_sim = Times_sim+1
-Times_burnt_average = np.mean(Times_burnt,axis=0)
-Ratio_bare_average = np.mean(Ratio_bare,axis=0)
-
-fig1 = plt.figure()
-ax = fig1.add_subplot(111)
-plt.title("Step as fire stops spreading  vs. bare probability",size = 15)
-ax.plot(Times_prob_bare, Times_burnt_average, label='prob_spread = 1', color='blue', linewidth=2, marker = 'o')
-
-# prob_spread = 0.5, Steps vs. bare probability
-Times_sim = 1
-Times_burnt_average = np.zeros((1,10))
-prob_spread = 0.5
-for prob_bare in range (1,11):
-    forest_sim(nx, ny,prob_spread, prob_bare*0.1, nsteps, Times_sim, Times_confirm, Times_burnt, Times_prob_spread,Ratio_bare, Times_prob_bare)
-    Times_sim = Times_sim+1
-Times_burnt_average = np.mean(Times_burnt,axis=0)
-Ratio_bare_average = np.mean(Ratio_bare,axis=0)
-
-ax.plot(Times_prob_bare, Times_burnt_average, label='prob_spread = 0.5', color='orange', linewidth=2, marker = 'o')
-
-plt.xlabel('bare probability', size = 15)
-plt.ylabel('Step as fire stops spreading', size = 15)
-
-ax.legend()
-plt.show()
-
-# introduction, methodology, result, discussion
+prob_bare = 0
+forest_sim(nx, ny, prob_spread, prob_bare, nsteps, Times_sim, Times_confirm, Times_burnt, Times_prob_spread,Ratio_bare, Times_prob_bare)
+Times_sim = Times_sim+1
