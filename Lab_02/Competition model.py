@@ -17,7 +17,7 @@ def dNdt_comp(t, N, a, b, c, d):
     The current time (not used here).
     N : two-element list
     The current value of N1 and N2 as a list (e.g., [N1, N2]).
-    a, b, c, d : float, defaults=1, 2, 1, 3
+    a, b, c, d : float
     The value of the Lotka-Volterra coefficients.
     
     Returns
@@ -40,14 +40,14 @@ def euler_solve(func, dT, N1_init, N2_init, a, b, c, d, t_final=100.0):
     func : function
     A python function that takes `time`, [`N1`, `N2`] as inputs and
     returns the time derivative of N1 and N2.
+    dT : floa
+    Largest timestep allowed in years.
     N1_init, N2_init : float
     Initial conditions for `N1` and `N2`, ranging from (0,1]
-    dT : float, default=10
-    Largest timestep allowed in years.
+    a, b, c, d : float
+    Lotka-Volterra coefficient values
     t_final : float, default=100
     Integrate until this value is reached, in years.
-    a, b, c, d : float, default=1, 2, 1, 3
-    Lotka-Volterra coefficient values
     
     Returns
     -------
@@ -80,15 +80,15 @@ def solve_rk8(func, dT, N1_init, N2_init, a, b, c, d, t_final=100.0):
     func : function
     A python function that takes `time`, [`N1`, `N2`] as inputs and
     returns the time derivative of N1 and N2.
-    N1_init, N2_init : float
-    Initial conditions for `N1` and `N2`, ranging from (0,1]
     dT : float, default=10
     Largest timestep allowed in years.
+    N1_init, N2_init : float
+    Initial conditions for `N1` and `N2`, ranging from (0,1]
+    a, b, c, d : float
+    Lotka-Volterra coefficient values
     t_final : float, default=100
     Integrate until this value is reached, in years.
-    a, b, c, d : float, default=1, 2, 1, 3
-    Lotka-Volterra coefficient values
-    
+
     Returns
     -------
     time : Numpy array
