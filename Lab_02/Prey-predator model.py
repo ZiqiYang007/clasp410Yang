@@ -125,6 +125,7 @@ dT = 0.01
 Euler_pp = euler_solve(dNdt_pp,dT,N1_initial,N2_initial,a,b,c,d)
 RK8_pp = solve_rk8(dNdt_pp,dT,N1_initial,N2_initial,a,b,c,d)
 
+# Draw the figure to illustrate the prey-predator model, Time vs N1, N2 amount
 fig1 = plt.figure()
 ax = fig1.add_subplot(111)  
 plt.title(f"Prey-predator Model, N1, N2 vs. time \n N1_initial = {N1_initial}; N2_initial = {N2_initial} \n a = {a};  b = {b}; c = {c}; d = {d}; dT = {dT}"
@@ -141,6 +142,7 @@ plt.ylabel('Population', size = 15)
 plt.grid(True)
 ax.legend()
 
+# The phase diagram for prey-predator model
 fig2 = plt.figure()
 ax = fig2.add_subplot(111)
 plt.title(f"Prey-predator Model predator vs. prey \n N1_initial = {N1_initial}; N2_initial = {N2_initial} \n a = {a};  b = {b}; c = {c}; d = {d}; dT = {dT}"
