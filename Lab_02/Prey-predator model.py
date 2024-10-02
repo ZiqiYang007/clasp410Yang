@@ -1,7 +1,31 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def dNdt_pp(t, N, a=1, b=2, c=1, d=3):
+def dNdt_pp(t, N, a, b, c, d):
+    
+    '''
+    This function calculates the Lotka-Voterra Predator-Prey equations for
+    two species. Given normalized populations, `N1` and `N2`, as well as the four coefficients representing population growth and decline,
+    calculate the time derivatives dN_1/dt and dN_2/dt and return to the
+    caller.
+    This function accepts `t`, or time, as an input parameter to be
+    compliant with Scipy's ODE solver. However, it is not used in this
+    function.
+    
+    Parameters
+    ----------
+    t : float
+    The current time (not used here).
+    N : two-element list
+    The current value of N1 and N2 as a list (e.g., [N1, N2]).
+    a, b, c, d: float
+    The value of the Lotka-Volterra coefficients.
+    
+    Returns
+    -------
+    dN1dt, dN2dt : floats
+    The time derivatives of `N1` and `N2`.   
+    '''
     
     dN1dt = a*N[0] - b*N[0]*N[1]
     dN2dt = -c*N[1] + d*N[1]*N[0]
@@ -9,7 +33,31 @@ def dNdt_pp(t, N, a=1, b=2, c=1, d=3):
     return dN1dt, dN2dt  
 
 def euler_solve(func, dT, N1_init, N2_init, a, b, c, d, t_final=100.0):
+    '''
+    Solve the Lotka-Volterra competition and predator/prey equations using Euler method
 
+    Parameters
+    ----------
+    func : function
+    A python function that takes `time`, [`N1`, `N2`] as inputs and
+    returns the time derivative of N1 and N2.
+    dT : float
+    Timestep in years.
+    N1_init, N2_init : float
+    Initial conditions for `N1` and `N2`, ranging from (0,1]
+    a, b, c, d: float
+    The value of the Lotka-Volterra coefficients.
+    t_final : float, default=100
+    Integrate until this value is reached, in years.
+
+    Returns
+    -------
+    time : Numpy array
+    Time elapsed in years.
+    N1, N2 : Numpy arrays
+    Normalized population density solutions.
+    '''
+    
     time = np.arange(0,t_final+dT,dT)
     N1 = np.zeros(time.size)
     N2 = np.zeros(time.size)
@@ -26,7 +74,31 @@ def euler_solve(func, dT, N1_init, N2_init, a, b, c, d, t_final=100.0):
 
 
 def solve_rk8(func, dT, N1_init, N2_init, a, b, c, d, t_final=100.0):
-
+    '''
+    Solve the Lotka-Volterra competition and predator/prey equations using
+    Scipy's ODE class and the adaptive step 8th order solver.
+    
+    Parameters
+    ----------
+    func : function
+    A python function that takes `time`, [`N1`, `N2`] as inputs and
+    returns the time derivative of N1 and N2.
+    N1_init, N2_init : float
+    Initial conditions for `N1` and `N2`, ranging from (0,1]
+    dT : float, default=10
+    Largest timestep allowed in years.
+    a, b, c, d : float
+    Lotka-Volterra coefficient values
+    t_final : float, default=100
+    Integrate until this value is reached, in years.
+    
+    Returns
+    -------
+    time : Numpy array
+    Time elapsed in years.
+    N1, N2 : Numpy arrays
+    Normalized population density solutions.
+    '''
     from scipy.integrate import solve_ivp
     # Configure the initial value problem solver
     result = solve_ivp(func, [0, t_final], [N1_init, N2_init],
