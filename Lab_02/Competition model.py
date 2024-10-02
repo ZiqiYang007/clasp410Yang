@@ -116,20 +116,21 @@ N2_initial = 0.5
 a = 1
 b = 2
 c = 1
-d = 2
+d = 3
 dT = 1
 
 Euler_comp = euler_solve(dNdt_comp,dT,N1_initial,N2_initial,a,b,c,d)
 RK8_comp = solve_rk8(dNdt_comp,dT,N1_initial,N2_initial,a,b,c,d)
 
+# Draw the figure to illustrate the competition model
 fig1 = plt.figure()
 ax = fig1.add_subplot(111)  
 plt.title(f"Competition Model, N1, N2 vs. time \n N1_initial = {N1_initial}; N2_initial = {N2_initial} \n a = {a};  b = {b}; c = {c}; d = {d}; dT = {dT}"
           ,size = 15)
 ax.plot(Euler_comp[0],Euler_comp[1],label='N1, Euler', color='blue', linewidth=line_width, marker = markerpattern, markersize = psize)
-#ax.plot(Euler_comp[0],Euler_comp[2],label='N2, Euler', color='red', linewidth=line_width, marker = markerpattern, markersize = psize)
+ax.plot(Euler_comp[0],Euler_comp[2],label='N2, Euler', color='red', linewidth=line_width, marker = markerpattern, markersize = psize)
 ax.plot(RK8_comp[0],RK8_comp[1],label='N1, RK8', linestyle = '--', color='lightblue', linewidth=line_width, marker = markerpattern, markersize = psize)
-#ax.plot(RK8_comp[0],RK8_comp[2],label='N2, RK8', linestyle = '--', color='salmon', linewidth=line_width, marker = markerpattern, markersize = psize)
+ax.plot(RK8_comp[0],RK8_comp[2],label='N2, RK8', linestyle = '--', color='salmon', linewidth=line_width, marker = markerpattern, markersize = psize)
 
 plt.xlabel('Time (years)', size = 15)
 plt.ylabel('Population', size = 15)
