@@ -12,6 +12,7 @@ def dNdt_comp(t, N, a=1, b=2, c=1, d=3):
     This function accepts `t`, or time, as an input parameter to be
     compliant with Scipy's ODE solver. However, it is not used in this
     function.
+    
     Parameters
     ----------
     t : float
@@ -20,6 +21,7 @@ def dNdt_comp(t, N, a=1, b=2, c=1, d=3):
     The current value of N1 and N2 as a list (e.g., [N1, N2]).
     a, b, c, d : float, defaults=1, 2, 1, 3
     The value of the Lotka-Volterra coefficients.
+    
     Returns
     -------
     dN1dt, dN2dt : floats
@@ -42,6 +44,7 @@ def dNdt_pp(t, N, a=1, b=2, c=1, d=3):
     This function accepts `t`, or time, as an input parameter to be
     compliant with Scipy's ODE solver. However, it is not used in this
     function.
+    
     Parameters
     ----------
     t : float
@@ -50,6 +53,7 @@ def dNdt_pp(t, N, a=1, b=2, c=1, d=3):
     The current value of N1 and N2 as a list (e.g., [N1, N2]).
     a, b, c, d : float, defaults=1, 2, 1, 3
     The value of the Lotka-Volterra coefficients.
+    
     Returns
     -------
     dN1dt, dN2dt : floats
@@ -70,12 +74,13 @@ def euler_solve(func, dT, N1_init=0.3, N2_init=0.6, t_final=100.0):
     func : function
     A python function that takes `time`, [`N1`, `N2`] as inputs and
     returns the time derivative of N1 and N2.
-    N1_init, N2_init : float
-    Initial conditions for `N1` and `N2`, ranging from (0,1]
     dT : float, default=10
     Largest timestep allowed in years.
+    N1_init, N2_init : float, default N1_init = 0.3, N2_init = 0.6
+    Initial conditions for `N1` and `N2`, ranging from (0,1]
     t_final : float, default=100
     Integrate until this value is reached, in years.
+    
     Returns
     -------
     time : Numpy array
@@ -104,15 +109,16 @@ a=1, b=2, c=1, d=3):
     '''
     Solve the Lotka-Volterra competition and predator/prey equations using
     Scipy's ODE class and the adaptive step 8th order solver.
+    
     Parameters
     ----------
     func : function
     A python function that takes `time`, [`N1`, `N2`] as inputs and
     returns the time derivative of N1 and N2.
-    N1_init, N2_init : float
-    Initial conditions for `N1` and `N2`, ranging from (0,1]
     dT : float, default=10
     Largest timestep allowed in years.
+    N1_init, N2_init : float, default N1_init = 0.3, N2_init = 0.6
+    Initial conditions for `N1` and `N2`, ranging from (0,1]
     t_final : float, default=100
     Integrate until this value is reached, in years.
     a, b, c, d : float, default=1, 2, 1, 3
