@@ -24,7 +24,7 @@ def n_layer_atoms_Nuclear_Winter(nlayers,epsilon,S0 = 1350,albedo=0.33,debug = F
     S0: float
     Solar radiation fluxes, unit is W/m^2. For Earth, the default value is 1350W/m^2
     albedo: float
-    The albedo of the planetary surface. For Earth, the default value is 0.33
+    The albedo of the planetary surface. For Earth, the default value is 0.33. Not use in this question.
     debug: bool
     A kind of test which could help us to testify if we have some problem in our model or not
     When debug = True, it will output elements in matrix A.
