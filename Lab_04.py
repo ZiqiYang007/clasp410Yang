@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 # Q1: Define function and validation
 
-def heatdiffusion(xmax, tmax, dx, dt, c2=1, debug=True):
+def heatdiffusion(xmax, tmax, dx, dt, c2=1, neumann=False, debug=True):
 
     '''
     Solve the heat diffusion model for certain parameters, return depth array, time array, and temperature matrix
@@ -84,6 +84,10 @@ def heatdiffusion(xmax, tmax, dx, dt, c2=1, debug=True):
         for j in range(0,N-1):
             for i in range(1,M-1):
                 U[i,j+1] = (1-2*r)*U[i,j] + r*(U[i-1,j] + U[i+1,j]) 
+        # Set Neumann-type boundary conditions:
+        if neumann:
+            U[0, j+1] = U[1, j+1]
+            U[-1, j+1] = U[-2, j+1]
         
         return xgrid, tgrid, U
     else:
