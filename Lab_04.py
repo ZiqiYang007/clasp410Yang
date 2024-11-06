@@ -1,12 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.colors import ListedColormap
 
 # Q1: Define function and validation
 
 def heatdiffusion(xmax, tmax, dx, dt, c2=1, neumann=False, debug=True):
 
     '''
-    Solve the heat diffusion model for certain parameters, return depth array, time array, and temperature matrix
+    Solve the heat diffusion model for certain parameters, return depth array, 
+    time array, and temperature matrix
     ----------
 
     Parameters
@@ -18,33 +20,41 @@ def heatdiffusion(xmax, tmax, dx, dt, c2=1, neumann=False, debug=True):
     the maxium time of the region we study, unit is second(s)
 
     dx: float
-    depth intervals for solving the numerical solution of the heat diffusion model, unit is meter(m)
+    depth intervals for solving the numerical solution of the heat 
+    diffusion model, unit is meter(m)
 
     dt: float
-    time intervals for solving the numerical solution of the heat diffusion model, unit is second(s)
+    time intervals for solving the numerical solution of the heat 
+    diffusion model, unit is second(s)
 
     c2: float, default is 1
     the diffusion coefficient, unit is m^2/s
 
     debug: bool
-    A kind of test which could help us to testify if we have some problem in our model or not
+    A kind of test which could help us to testify if we have some problem in 
+    our model or not
     When debug = True, the extra output will include: 
-    depth and time range in our function(xmax and tmax), depth and time intervals (dx and dt),
-    the heat diffusion grid dimension(M,N), 
-    depth array include each point of depth(xgrid), time array include each point of depth(tgrid).
+        depth and time range in our function(xmax and tmax), 
+        depth and time intervals (dx and dt),
+        the heat diffusion grid dimension(M,N), 
+        depth array include each point of depth(xgrid), 
+        time array include each point of depth(tgrid).
 
     ----------
 
     Return
     ----------
     xgrid: float array
-    A array include a series of depth value with the interval of dx(from 0 to xmax), unit is meter(m)
+    A array include a series of depth value with the interval of 
+    dx(from 0 to xmax), unit is meter(m)
 
     tgrid: float array
-    A array include a series of time value with the interval of dt(from 0 to tmax), unit is second(s)
+    A array include a series of time value with the interval of 
+    dt(from 0 to tmax), unit is second(s)
 
     U: float MxN matrix
-    Each point in the matrix represent of the temperature of the ceratin depth and time, 
+    Each point in the matrix represent of the temperature of the 
+    ceratin depth and time, 
     the solution of the heat diffusion model, unit is ℃
     '''
 
@@ -93,7 +103,6 @@ def heatdiffusion(xmax, tmax, dx, dt, c2=1, neumann=False, debug=True):
     else:
         print('error')
 
-from matplotlib.colors import ListedColormap
 
 # Get solution using your solver:
 xmax = 1
@@ -111,7 +120,8 @@ fig, axes = plt.subplots(1, 1)
 # Create a color map and add a color bar.
 map = axes.pcolor(time, x, heat, cmap='seismic', vmin=0, vmax=1, shading='nearest')
 
-plt.title(r"Heat diffusion model ($c^{2}$ = 1, $\Delta x$ = 0.2, $\Delta t$ = 0.02)",fontsize = 20)
+plt.title(r"Heat diffusion model ($c^{2}$ = 1, \
+          $\Delta x$ = 0.2, $\Delta t$ = 0.02)",fontsize = 20)
 plt.xlabel("Time (s)", fontsize = 15)
 plt.ylabel("Depth (m)", fontsize = 15)
 plt.tick_params(axis='both', which='major', labelsize = 12)
